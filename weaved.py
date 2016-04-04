@@ -52,8 +52,6 @@ def listDevices(json, token):
 	getConnectionInfo(deviceAddress, deviceIp, token)
 
 def getConnectionInfo(deviceAddress, hostIp, token):
-	print("Gathering data...")
-
 	url = "https://api.weaved.com/v22/api/device/connect"
 
 	connectionData = requests.post(url, headers={"apikey":"WeavedDemoKey$2015","token":token}, json={"deviceaddress":deviceAddress,"hostip":hostIp,"wait":"true"});
