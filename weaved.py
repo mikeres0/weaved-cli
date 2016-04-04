@@ -19,7 +19,7 @@ def Init():
 		token = loginJson['token']
 		getDevices(token)
 	else:
-		print("Error 1: Unable to connect to api.weaved.com")
+		print("Error 1: Unable to connect to api.weaved.com. Check your credentials.")
 		sys.exit()
 
 def getDevices(token):
@@ -31,7 +31,11 @@ def getDevices(token):
 
 	deviceJson = json.loads(deviceData.text)
 
-	listDevices(deviceJson, token)
+	if deviceJson['status'] == "true":
+		listDevices(deviceJson, token)
+	else:
+		print("Error 2: There was a problem retrieving the device list");
+		sys.exit()
 
 def listDevices(json, token):
 	print("Listing devices...")
@@ -58,10 +62,11 @@ def getConnectionInfo(deviceAddress, hostIp, token):
 
 	connectionJson = json.loads(connectionData.text)
 
-	print("")
-	print("Enter this into your respective client: " + connectionJson['connection']['proxy'])
-
-
+	if connectionJson['status'] == "true":
+		print("")
+		print("Enter this into your respective client: " + connectionJson['connection']['proxy'])
+	else:
+		print("Error 3: There was a problem getting the connection details.")
 
 
 Init()
