@@ -1,33 +1,40 @@
-import json, requests, sys
+import json, requests, sys, getpass, os
 
 def Init():
 	print("+===== Weaved CLI - Mike Resoli (c) =====+")
+	print("")
+	print("")
 
-	username = input("Enter your email address: ")
-	password = input("Enter your password: ")
+	try:
+		username = input("Enter your email address: ")
+		password = getpass.getpass()
 
-	url = "https://api.weaved.com/v22/api/user/login/" + username + "/" + password
+		url = "https://api.weaved.com/v22/api/user/login/" + username + "/" + password
 
-	print("Connecting...")
+		print("Connecting...")
 
-	loginData = requests.get(url, headers={"apikey":"WeavedDemoKey$2015"});
+		loginData = requests.get(url, headers={"apikey":"WeavedDemoKey$2015"}, timeout=10);
 
-	loginJson = json.loads(loginData.text)
+		loginJson = json.loads(loginData.text)
 
-	if loginJson['status'] == "true":
-		print("Success");
-		token = loginJson['token']
-		getDevices(token)
-	else:
-		print("Error 1: Unable to connect to api.weaved.com. Check your credentials.")
-		sys.exit()
+		if loginJson['status'] == "true":
+			clearScreen()
+			token = loginJson['token']
+			getDevices(token)
+		else:
+			print("Error 1: Unable to connect to api.weaved.com. Check your credentials.")
+			sys.exit()
+	except SyntaxError:
+		print("Wrap your email address in double quotes.")
+		Init()
+
 
 def getDevices(token):
 	url = "https://api.weaved.com/v22/api/device/list/all"
 
 	print("Retrieving devices using token " + token)
 
-	deviceData = requests.get(url, headers={"apikey":"WeavedDemoKey$2015","token":token});
+	deviceData = requests.get(url, headers={"apikey":"WeavedDemoKey$2015","token":token}, timeout=10);
 
 	deviceJson = json.loads(deviceData.text)
 
@@ -48,25 +55,37 @@ def listDevices(json, token):
 
 	picked = int(input("Select a device (enter 0 for the first): "))
 
-	deviceAddress = json['devices'][picked]['deviceaddress']
-	deviceIp = json['devices'][picked]['devicelastip']
+	clearScreen()
 
-	print("Getting connection info for " + json['devices'][picked]['devicealias'])
+	try:
+		deviceAddress = json['devices'][picked]['deviceaddress']
+		deviceIp = json['devices'][picked]['devicelastip']
+		print("Getting connection info for " + json['devices'][picked]['devicealias'])
+		getConnectionInfo(deviceAddress, deviceIp, token)
+	except:
+		print("Your selection is out of range.")
+		print("")
+		listDevices(json, token)
 
-	getConnectionInfo(deviceAddress, deviceIp, token)
 
 def getConnectionInfo(deviceAddress, hostIp, token):
 	url = "https://api.weaved.com/v22/api/device/connect"
 
-	connectionData = requests.post(url, headers={"apikey":"WeavedDemoKey$2015","token":token}, json={"deviceaddress":deviceAddress,"hostip":hostIp,"wait":"true"});
+	connectionData = requests.post(url, headers={"apikey":"WeavedDemoKey$2015","token":token}, json={"deviceaddress":deviceAddress,"hostip":hostIp,"wait":"true"}, timeout=20);
 
 	connectionJson = json.loads(connectionData.text)
 
 	if connectionJson['status'] == "true":
 		print("")
-		print("Enter this into your respective client: " + connectionJson['connection']['proxy'])
+		print("Connection: " + connectionJson['connection']['proxy'])
 	else:
 		print("Error 3: There was a problem getting the connection details.")
+
+def clearScreen():
+	if (os.name in ('ce', 'nt', 'dos')):
+		os.system('cls')
+	else:
+		os.system('clear')
 
 
 Init()
