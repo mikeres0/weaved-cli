@@ -5,7 +5,7 @@ A command line tool for retrieving Weaved connection information. Written in Pyt
 1. [Python Requests](http://docs.python-requests.org/en/master/) - Installed using `pip install requests`
 
 
-**Potential issue:** If you recieve the following error, wrap your email address and password in double quotes, for instance "email@url.com" and "password"
+**Potential issue:** If you recieve the following error, wrap your email address in double quotes, for instance "email@url.com"
 
 ```Traceback (most recent call last):
   File "weaved.py", line 69, in <module>
