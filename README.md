@@ -1,5 +1,5 @@
 # weaved-cli
-A command line tool for retrieving [Weaved](https://www.weaved.com/) connection information. Written in Python.
+A command line tool for retrieving [remot3.it](https://www.remot3.it) (formerly [Weaved](https://www.weaved.com)) connection information. Written in Python.
 
 ##### Dependencies
 1. [Python Requests](http://docs.python-requests.org/en/master/) - Installed using `pip install requests`
