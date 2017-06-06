@@ -1,6 +1,8 @@
 # weaved-cli
 A command line tool for retrieving [remot3.it](https://www.remot3.it) (formerly [Weaved](https://www.weaved.com)) connection information. Written in Python.
 
+Note that this is a bit hacky with using a demo API key that I got back in 2015... So it could stop working at any time. I'm sure Remot3 will provide you with a new key should you need it. 
+
 ##### Dependencies
 1. [Python Requests](http://docs.python-requests.org/en/master/) - Installed using `pip install requests`
 
