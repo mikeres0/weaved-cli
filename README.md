@@ -12,3 +12,6 @@ A command line tool for retrieving [remot3.it](https://www.remot3.it) (formerly 
 4. Select a device from the list
 5. Your connection information will be returned like so: `http://proxy**.yoics.net:*****`
 
+#### Python Version
+This script may not run on python 3.5, I'm yet to investigate. 
+
